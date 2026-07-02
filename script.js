@@ -59,7 +59,7 @@ button.addEventListener("click", async function () {
     await addDoc(itemsRef, {
         name: itemName,
         createdAt: serverTimestamp(),
-        addedBy: auth.currentUser.email
+        addedBy: auth.currentUser.displayName
     });
 
     input.value = "";
@@ -85,7 +85,7 @@ onAuthStateChanged(auth, function (user) {
                     ? item.addedBy.split("@")[0]
                     : "不明";
 
-                itemText.textContent = `${item.name}（追加：${userName}）`;
+                itemText.textContent = `${item.name}（${userName}）`;
 
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "削除";
