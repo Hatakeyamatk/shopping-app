@@ -81,7 +81,11 @@ onAuthStateChanged(auth, function (user) {
                 const li = document.createElement("li");
 
                 const itemText = document.createElement("span");
-                itemText.textContent = item.name + "（追加：" + item.addedBy + "）";
+                const userName = item.addedBy
+                    ? item.addedBy.split("@")[0]
+                    : "不明";
+
+                itemText.textContent = `${item.name}（追加：${userName}）`;
 
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "削除";
