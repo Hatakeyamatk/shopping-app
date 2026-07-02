@@ -12,16 +12,20 @@
 <body>
 
 <div class="container">
-
     <h1>買い物メモ</h1>
 
-    <div class="input-area">
-        <input type="text" id="itemInput" placeholder="買うものを入力">
-        <button id="addButton">追加</button>
+    <p id="userInfo">ログインしてください</p>
+    <button id="loginButton">Googleでログイン</button>
+    <button id="logoutButton" style="display:none;">ログアウト</button>
+
+    <div id="appArea" style="display:none;">
+        <div class="input-area">
+            <input type="text" id="itemInput" placeholder="買うものを入力">
+            <button id="addButton">追加</button>
+        </div>
+
+        <ul id="shoppingList"></ul>
     </div>
-
-    <ul id="shoppingList"></ul>
-
 </div>
 
 <script type="module" src="script.js"></script>

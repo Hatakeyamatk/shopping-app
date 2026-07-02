@@ -9,6 +9,14 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
+import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyCLnSqWs7yvU6Fs7JbQFGxvhI2KAWECPUI",
     authDomain: "shopping-app-62aad.firebaseapp.com",
@@ -20,12 +28,26 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 const input = document.getElementById("itemInput");
 const button = document.getElementById("addButton");
 const list = document.getElementById("shoppingList");
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+const userInfo = document.getElementById("userInfo");
+const appArea = document.getElementById("appArea");
 
 const itemsRef = collection(db, "shoppingItems");
+
+loginButton.addEventListener("click", async function () {
+    await signInWithPopup(auth, provider);
+});
+
+logoutButton.addEventListener("click", async function () {
+    await signOut(auth);
+});
 
 button.addEventListener("click", async function () {
     const itemName = input.value.trim();
@@ -42,26 +64,42 @@ button.addEventListener("click", async function () {
     input.value = "";
 });
 
-onSnapshot(itemsRef, function (snapshot) {
-    list.innerHTML = "";
+onAuthStateChanged(auth, function (user) {
+    if (user) {
+        userInfo.textContent = user.email + " でログイン中";
+        loginButton.style.display = "none";
+        logoutButton.style.display = "inline-block";
+        appArea.style.display = "block";
 
-    snapshot.forEach(function (docItem) {
-        const item = docItem.data();
+        onSnapshot(itemsRef, function (snapshot) {
+            list.innerHTML = "";
 
-        const li = document.createElement("li");
+            snapshot.forEach(function (docItem) {
+                const item = docItem.data();
 
-        const itemText = document.createElement("span");
-        itemText.textContent = item.name;
+                const li = document.createElement("li");
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "削除";
+                const itemText = document.createElement("span");
+                itemText.textContent = item.name;
 
-        deleteButton.addEventListener("click", async function () {
-            await deleteDoc(doc(db, "shoppingItems", docItem.id));
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "削除";
+
+                deleteButton.addEventListener("click", async function () {
+                    await deleteDoc(doc(db, "shoppingItems", docItem.id));
+                });
+
+                li.appendChild(itemText);
+                li.appendChild(deleteButton);
+                list.appendChild(li);
+            });
         });
 
-        li.appendChild(itemText);
-        li.appendChild(deleteButton);
-        list.appendChild(li);
-    });
+    } else {
+        userInfo.textContent = "ログインしてください";
+        loginButton.style.display = "inline-block";
+        logoutButton.style.display = "none";
+        appArea.style.display = "none";
+        list.innerHTML = "";
+    }
 });
