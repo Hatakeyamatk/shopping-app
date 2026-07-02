@@ -58,7 +58,8 @@ button.addEventListener("click", async function () {
 
     await addDoc(itemsRef, {
         name: itemName,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        addedBy: auth.currentUser.email
     });
 
     input.value = "";
@@ -80,7 +81,7 @@ onAuthStateChanged(auth, function (user) {
                 const li = document.createElement("li");
 
                 const itemText = document.createElement("span");
-                itemText.textContent = item.name;
+                itemText.textContent = item.name + "（追加：" + item.addedBy + "）";
 
                 const deleteButton = document.createElement("button");
                 deleteButton.textContent = "削除";
