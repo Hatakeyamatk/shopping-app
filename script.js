@@ -81,9 +81,7 @@ onAuthStateChanged(auth, function (user) {
                 const li = document.createElement("li");
 
                 const itemText = document.createElement("span");
-                const userName = item.addedBy
-                    ? item.addedBy.split("@")[0]
-                    : "不明";
+                const userName = item.addedBy || "不明";
 
                 itemText.textContent = `${item.name}（${userName}）`;
 
