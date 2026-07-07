@@ -6,21 +6,23 @@ body {
     font-family: sans-serif;
     background: #f3f3f3;
     margin: 0;
-    padding: 16px;
+    padding: 12px;
+    overflow-x: hidden;
 }
 
 .container {
     width: 100%;
     max-width: 400px;
-    margin: 40px auto;
+    margin: 20px auto;
     background: #fff;
-    padding: 20px;
+    padding: 16px;
     border-radius: 10px;
 }
 
 .input-area {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+    width: 100%;
 }
 
 input {
@@ -31,25 +33,33 @@ input {
 }
 
 button {
-    padding: 10px 16px;
+    padding: 10px 12px;
     cursor: pointer;
     font-size: 16px;
+    white-space: nowrap;
+}
+
+ul {
+    padding: 0;
+    margin: 16px 0 0;
+    list-style: none;
 }
 
 li {
     margin-top: 10px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
     background: #fafafa;
     padding: 10px;
     border-radius: 6px;
-    word-break: break-word;
+    width: 100%;
 }
 
 li span {
     flex: 1;
+    min-width: 0;
+    word-break: break-word;
 }
 
 li button {
@@ -61,24 +71,19 @@ li button {
 }
 
 @media (max-width: 480px) {
-    .container {
-        margin: 20px auto;
-        padding: 16px;
-    }
-
     .input-area {
         flex-direction: column;
     }
 
-    button {
+    .input-area button {
         width: 100%;
     }
 
     li {
-        align-items: flex-start;
+        flex-wrap: wrap;
     }
 
     li button {
-        width: auto;
+        margin-left: auto;
     }
 }
